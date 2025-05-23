@@ -15,6 +15,7 @@ const AddUserPage = () => {
     VisaCountry: "",
     University: "",
     VisaGrantDate: "",
+    createdAt: new Date().toLocaleString(),
   });
   const [submitting, setSubmitting] = useState(false);
 

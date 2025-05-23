@@ -42,11 +42,15 @@ const Page = () => {
         "S No.": i + 1,
         Name: user.fullName,
         Email: user.email,
+        Visa_Country:user.VisaCountry,
+        University: user.University,
+        Visa_Grant_Date: user.VisaGrantDate,
+        CreatedAt: user.createdAt,
       }))
     );
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Admin");
-    XLSX.writeFile(workbook, "Admin_Data.xlsx");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+    XLSX.writeFile(workbook, "Students_Data.xlsx");
   };
 
   const filteredUsers = users.filter((user) =>

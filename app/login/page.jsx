@@ -40,6 +40,11 @@ const Page = () => {
       if (user.emailVerified) {
         const token = await user.getIdToken();
         Cookies.set("token", token, { path: "/", expires: 30 });
+         setDoc(doc(firestore, "log", user.uid), {
+                email,
+                LoggedAt: new Date().toISOString()
+              });
+        
         setTimeout(() => {
           router.push("/dashboard");
         }, 2000);

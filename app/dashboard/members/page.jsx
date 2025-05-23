@@ -10,8 +10,6 @@ const Page = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedBatch, setSelectedBatch] = useState("");
-  const [selectedFaculty, setSelectedFaculty] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
   const router = useRouter();
@@ -44,6 +42,8 @@ const Page = () => {
         "S No.": i + 1,
         Name: user.fullName,
         Email: user.email,
+        Phone: user.mobileNumber,
+        Cretedat:user.createdAt
       }))
     );
     const workbook = XLSX.utils.book_new();
