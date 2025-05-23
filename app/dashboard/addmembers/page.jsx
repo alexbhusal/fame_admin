@@ -78,6 +78,11 @@ const Page = () => {
     setError(null);
     setMessage(null);
     setLoading(true);
+    if (!imgurl) {
+      toast.error("Please upload an image");
+      setLoading(false);
+      return;
+    }
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
@@ -117,13 +122,10 @@ const Page = () => {
       toast.warning(
         "Registration successful! Check your email for verification."
       );
-    
-        setTimeout(() => {
-         router.push
-        }, 2000);
-      
-      
-      
+
+      setTimeout(() => {
+        router.push;
+      }, 2000);
     } catch (e) {
       toast.error(e.message || "Unknown Error");
     } finally {
@@ -134,11 +136,11 @@ const Page = () => {
   return (
     <>
       <h1 className="text-center text-3xl md:text-5xl m-2 md:m-5 text-black font-serif">
-        Add Members 
+        Add Members
       </h1>
       <div className="flex flex-col md:flex-row">
         <div className="w-full h-full md:w-3/5 ">
-          <RegAnimation/>
+          <RegAnimation />
         </div>
         <div className="border-l-4 border-black"></div>
         <div className="mx-2 md:mx-12">
@@ -257,7 +259,7 @@ const Page = () => {
                       <Spin />
                     </div>
                   ) : (
-                    "Register"
+                    "ADD MEMBER"
                   )}
                 </button>
               </div>

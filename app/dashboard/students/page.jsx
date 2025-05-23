@@ -10,8 +10,6 @@ const Page = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedBatch, setSelectedBatch] = useState("");
-  const [selectedFaculty, setSelectedFaculty] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
   const router = useRouter();
@@ -22,7 +20,7 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userDB = collection(firestore, "admin");
+        const userDB = collection(firestore, "student");
         const sData = await getDocs(userDB);
         const userData = sData.docs.map((doc) => ({
           id: doc.id,
@@ -70,7 +68,7 @@ const Page = () => {
   ) : (
     <div className="px-4">
       <h1 className="text-center text-2xl md:text-4xl italic font-serif mb-4">
-        User Record
+        Students Record
       </h1>
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
@@ -111,7 +109,7 @@ const Page = () => {
       <table className="min-w-full border-collapse">
         <thead>
           <tr className="text-xs md:text-2xl">
-            {["S No.", "Name", "Email", "Phone", "Profile", "Action"].map(
+            {["S No.", "Name", "Email","Visa Country","University","Visa Grant Date" , "Profile","Action"].map(
               (h, i) => (
                 <th key={i} className="border px-2 py-1">
                   {h}
@@ -131,9 +129,9 @@ const Page = () => {
               </td>
               <td className="border px-2 py-1">{user.fullName}</td>
               <td className="border px-2 py-1">{user.email}</td>
-              <td className="border px-2 py-1">
-                {user.mobileNumber || "----"}
-              </td>
+              <td className="border px-2 py-1">{user.VisaCountry}</td>
+              <td className="border px-2 py-1">{user.University}</td>
+              <td className="border px-2 py-1">{user.VisaGrantDate}</td>
               <td className="border px-2 py-1 w-32">
                 <img
                   src={user.imgurl || defaultImg}

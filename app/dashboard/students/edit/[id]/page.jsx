@@ -21,7 +21,7 @@ const EditUserPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userRef = doc(firestore, "admin", id);
+        const userRef = doc(firestore, "student", id);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) setUser({ id, ...userSnap.data() });
         else Swal.fire("Not Found", "User not found", "error");
@@ -39,9 +39,9 @@ const EditUserPage = () => {
   const handleUpdate = async () => {
     setUpdating(true);
     try {
-      await updateDoc(doc(firestore, "admin", id), user);
+      await updateDoc(doc(firestore, "student", id), user);
       Swal.fire("Success", `${user.fullName} updated!`, "success");
-      router.push("/dashboard/members");
+      router.push("/dashboard/students");
     } catch {
       console.log("Error", "Failed to update user", "error");
     } finally {
@@ -58,7 +58,7 @@ const EditUserPage = () => {
     });
     if (result.isConfirmed) {
       try {
-        await deleteDoc(doc(firestore, "admin", id));
+        await deleteDoc(doc(firestore, "student", id));
         Swal.fire("Deleted!", `${user.fullName} has been deleted.`, "success");
         router.push("/dashboard/members");
       } catch {
@@ -72,11 +72,11 @@ const EditUserPage = () => {
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center ">Edit User</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center ">Edit Student</h1>
       <div className="flex justify-center items-center">
       <img src={user.imgurl || defaultImg} alt=""  className="h-32 w-32 object-cover rounded-2xl"/>
     </div>
-      {["fullName", "email", "mobileNumber"].map((field) => (
+        {["fullName", "email", "VisaCountry", "University", "VisaGrantDate"].map((field) => (
         <div key={field} className="mb-4">
           <label className="block mb-1 font-serif">{field.toUpperCase()}</label>
           <input

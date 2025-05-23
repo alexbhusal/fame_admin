@@ -11,8 +11,10 @@ const AddUserPage = () => {
   const [user, setUser] = useState({
     fullName: "",
     email: "",
-    mobileNumber: "",
     imgurl: "",
+    VisaCountry: "",
+    University: "",
+    VisaGrantDate: "",
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -22,16 +24,21 @@ const AddUserPage = () => {
   const handleChange = (e) =>
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();  // Prevent default form submission reload
+    if (!user.imgurl || user.imgurl === defaultImg) {
+    Swal.fire("Error", "Please upload a profile image before submitting.", "error");
+    return;
+  }
     setSubmitting(true);
     try {
       const userData = {
         ...user,
         imgurl: user.imgurl || defaultImg,
       };
-      await addDoc(collection(firestore, "admin"), userData);
+      await addDoc(collection(firestore, "student"), userData);
       Swal.fire("Success", `${user.fullName} added successfully!`, "success");
-      router.push("/dashboard/members");
+      router.push("/dashboard/students");
     } catch (error) {
       console.error("Add user error:", error);
       Swal.fire("Error", "Failed to add user", "error");
@@ -60,29 +67,38 @@ const AddUserPage = () => {
         <UploadImage setImageUrl={setImageUrl} />
       </div>
 
-      {["fullName", "email", "mobileNumber","Visa Country","University","Visa Grant Date"].map((field) => (
-        <div key={field} className="mb-4">
-          <label className="block mb-1 font-serif">{field.toUpperCase()}</label>
-          <input
-            type="text"
-            name={field}
-            value={user[field]}
-            onChange={handleChange}
-            placeholder={`Enter ${field}`}
-            className="w-full border px-3 py-2 rounded font"
-          />
-        </div>
-      ))}
+      <form onSubmit={handleSubmit}>
+        {["fullName", "email", "VisaCountry", "University", "VisaGrantDate"].map((field) => {
+          let inputType = "text";
+          if (field === "email") inputType = "email";
+          if (field === "VisaGrantDate") inputType = "date";
 
-      <div className="flex justify-center">
-        <button
-          onClick={handleSubmit}
-          disabled={submitting}
-          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
-        >
-          {submitting ? "Submitting..." : "Add Member"}
-        </button>
-      </div>
+          return (
+            <div key={field} className="mb-4">
+              <label className="block mb-1 font-serif">{field.toUpperCase()}</label>
+              <input
+                type={inputType}
+                name={field}
+                value={user[field]}
+                required
+                onChange={handleChange}
+                placeholder={`Enter ${field}`}
+                className="w-full border px-3 py-2 rounded font"
+              />
+            </div>
+          );
+        })}
+
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+          >
+            {submitting ? "Submitting..." : "Add Student"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
