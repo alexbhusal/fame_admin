@@ -41,6 +41,7 @@ const Page = () => {
       filteredUsers.map((user, i) => ({
         "S No.": i + 1,
         Name: user.fullName,
+        Designation:user.Designation,
         Email: user.email,
         Phone: user.mobileNumber,
         Cretedat:user.createdAt
@@ -111,7 +112,7 @@ const Page = () => {
       <table className="min-w-full border-collapse">
         <thead>
           <tr className="text-xs md:text-2xl">
-            {["S No.", "Name", "Email", "Phone", "Profile", "Action"].map(
+            {["S No.", "Name","Designation", "Email", "Phone", "Profile", "Action"].map(
               (h, i) => (
                 <th key={i} className="border px-2 py-1">
                   {h}
@@ -130,6 +131,7 @@ const Page = () => {
                 {(currentPage - 1) * usersPerPage + i + 1}
               </td>
               <td className="border px-2 py-1">{user.fullName}</td>
+              <td className="border px-2 py-1">{user.designation}</td>
               <td className="border px-2 py-1">{user.email}</td>
               <td className="border px-2 py-1">
                 {user.mobileNumber || "----"}

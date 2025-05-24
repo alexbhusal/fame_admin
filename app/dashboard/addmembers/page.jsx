@@ -17,6 +17,7 @@ const Page = () => {
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [designation, setDesignation] = useState("");
   const [password, setPassword] = useState("");
   const [imgurl, setImageUrl] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -115,6 +116,7 @@ const Page = () => {
         fullName,
         email,
         imgurl,
+        designation,
         createdAt: new Date(),
       });
 
@@ -124,7 +126,7 @@ const Page = () => {
       );
 
       setTimeout(() => {
-        router.push;
+        router.push("/dashboard/members");
       }, 2000);
     } catch (e) {
       toast.error(e.message || "Unknown Error");
@@ -173,6 +175,17 @@ const Page = () => {
                   className=" focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full md:w-72 border-2 border-indigo-500 p-3 rounded-full"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  id="designation"
+                  placeholder="Designation"
+                  className=" focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full md:w-72 border-2 border-indigo-500 p-3 rounded-full"
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
                   required
                 />
               </div>

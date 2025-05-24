@@ -1,21 +1,41 @@
 "use client";
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
-import { auth, firestore } from '../../utils/firebase';
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import { auth, firestore } from "../../utils/firebase";
 import { GrUserAdmin } from "react-icons/gr";
 import { IoHome } from "react-icons/io5";
 import { PiStudent } from "react-icons/pi";
 
-
 const navItems = [
-  { href: '/dashboard', label: <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><IoHome /> Home</span> },
-  { href: '/dashboard/members', label: <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><GrUserAdmin /> Members</span> },
-  { href: '/dashboard/students', label: <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><PiStudent /> Students</span> },
+  {
+    href: "/dashboard",
+    label: (
+      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <IoHome /> Home
+      </span>
+    ),
+  },
+  {
+    href: "/dashboard/members",
+    label: (
+      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <GrUserAdmin /> Members
+      </span>
+    ),
+  },
+  {
+    href: "/dashboard/students",
+    label: (
+      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <PiStudent /> Students
+      </span>
+    ),
+  },
 ];
 
 const DashboardLayout = ({ children }) => {
@@ -23,7 +43,9 @@ const DashboardLayout = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userName, setUserName] = useState("Loading...");
   const [userEmail, setUserEmail] = useState("Loading...");
-  const [userImageurl, setUserImageurl] = useState("https://via.placeholder.com/150");
+  const [userImageurl, setUserImageurl] = useState(
+    "https://via.placeholder.com/150"
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,21 +54,25 @@ const DashboardLayout = ({ children }) => {
       if (currentUser) {
         setUser(currentUser);
         try {
-          const userDocRef = doc(firestore, 'admin', currentUser.uid);
+          const userDocRef = doc(firestore, "admin", currentUser.uid);
           const userDocSnap = await getDoc(userDocRef);
-          console.log( currentUser.uid);
-          
+          console.log(currentUser.uid);
+
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
             setUserName(userData.fullName || "No name provided");
-            setUserImageurl(userData.imgurl || "https://via.placeholder.com/150");
+            setUserImageurl(
+              userData.imgurl || "https://via.placeholder.com/150"
+            );
             setUserEmail(userData.email || "No email provided");
           } else {
             console.log("No such user document!");
             // Fallback to auth user data if document doesn't exist
             setUserName(currentUser.fullName || "No name provided");
             setUserEmail(currentUser.email || "No email provided");
-            setUserImageurl(currentUser.imgurl || "https://via.placeholder.com/150");
+            setUserImageurl(
+              currentUser.imgurl || "https://via.placeholder.com/150"
+            );
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -54,7 +80,9 @@ const DashboardLayout = ({ children }) => {
           // Fallback to auth user data on error
           setUserName(currentUser.displayName || "No name provided");
           setUserEmail(currentUser.email || "No email provided");
-          setUserImageurl(currentUser.photoURL || "https://via.placeholder.com/150");
+          setUserImageurl(
+            currentUser.photoURL || "https://via.placeholder.com/150"
+          );
         }
       } else {
         // No user is signed in
@@ -99,7 +127,9 @@ const DashboardLayout = ({ children }) => {
           {navItems.map(({ href, label }) => (
             <li key={href}>
               <Link href={href} className="text-xs md:text-2xl font-semibold">
-                <span className="block p-2 hover:text-red-500 rounded cursor-pointer">{label}</span>
+                <span className="block p-2 hover:text-red-500 rounded cursor-pointer">
+                  {label}
+                </span>
               </Link>
             </li>
           ))}
@@ -110,14 +140,18 @@ const DashboardLayout = ({ children }) => {
             alt="Profile"
             className="w-auto h-12 md:h-32 rounded-full mx-auto"
           />
-          <h1 className="mt-2 font-bold text-sm md:text-lg">{userName}</h1>
-          <h1 className="text-xs text-gray-500">{userEmail}</h1>
-            <button
-              onClick={handleLogOut}
-              className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600"
-            >
-              Logout
-            </button>
+          <h1 className="mt-2 font-bold text-sm md:text-lg  w-32 overflow-x-hidden whitespace-nowrap">
+            {userName}
+          </h1>
+          <h1 className="text-xs text-gray-500 w-32 overflow-x-hidden whitespace-nowrap">
+            {userEmail}
+          </h1>
+          <button
+            onClick={handleLogOut}
+            className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
         </div>
       </aside>
       <section className="flex-1 p-4 md:p-8">{children}</section>
