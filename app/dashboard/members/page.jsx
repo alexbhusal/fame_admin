@@ -41,7 +41,7 @@ const Page = () => {
       filteredUsers.map((user, i) => ({
         "S No.": i + 1,
         Name: user.fullName,
-        Designation:user.Designation,
+        Designation:user.designation,
         Email: user.email,
         Phone: user.mobileNumber,
         Cretedat:user.createdAt
