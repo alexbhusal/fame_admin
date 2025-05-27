@@ -76,7 +76,7 @@ const EditUserPage = () => {
       <div className="flex justify-center items-center">
       <img src={user.imgurl || defaultImg} alt=""  className="h-32 w-32 object-cover rounded-2xl"/>
     </div>
-        {["fullName", "email", "VisaCountry", "University", "VisaGrantDate"].map((field) => (
+        {["fullName", "email", "VisaCountry", "Feedback", "VisaGrantDate"].map((field) => (
         <div key={field} className="mb-4">
           <label className="block mb-1 font-serif">{field.toUpperCase()}</label>
           <input

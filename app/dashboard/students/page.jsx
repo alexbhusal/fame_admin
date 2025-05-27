@@ -42,7 +42,7 @@ const Page = () => {
         "S No.": i + 1,
         Name: user.fullName,
         Email: user.email,
-        Visa_Country:user.VisaCountry,
+        Visa_Country: user.VisaCountry,
         University: user.University,
         Visa_Grant_Date: user.VisaGrantDate,
         CreatedAt: user.createdAt,
@@ -113,13 +113,20 @@ const Page = () => {
       <table className="min-w-full border-collapse">
         <thead>
           <tr className="text-xs md:text-2xl">
-            {["S No.", "Name", "Email","Visa Country","University","Visa Grant Date" , "Profile","Action"].map(
-              (h, i) => (
-                <th key={i} className="border px-2 py-1">
-                  {h}
-                </th>
-              )
-            )}
+            {[
+              "S No.",
+              "Name",
+              "Email",
+              "Visa Country",
+              "Feedback",
+              "Visa Grant Date",
+              "Profile",
+              "Action",
+            ].map((h, i) => (
+              <th key={i} className="border px-2 py-1">
+                {h}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -131,10 +138,12 @@ const Page = () => {
               <td className="border px-2 py-1">
                 {(currentPage - 1) * usersPerPage + i + 1}
               </td>
-              <td className="border px-2 py-1">{user.fullName}</td>
-              <td className="border px-2 py-1">{user.email}</td>
-              <td className="border px-2 py-1">{user.VisaCountry}</td>
-              <td className="border px-2 py-1">{user.University}</td>
+              <td className="border px-2 py-1 max-w-48 overflow-x-scroll">{user.fullName}</td>
+              <td className="border px-2 py-1 max-w-48 overflow-x-scroll">{user.email}</td>
+              <td className="border px-2 py-1 max-w-48 overflow-x-scroll">{user.VisaCountry}</td>
+              <td className="border px-2 py-1 max-w-48  overflow-x-scroll  whitespace-nowrap">
+                {user.Feedback}
+              </td>
               <td className="border px-2 py-1">{user.VisaGrantDate}</td>
               <td className="border px-2 py-1 w-32">
                 <img

@@ -69,7 +69,7 @@ const AddUserPage = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {["fullName", "email", "VisaCountry", "University", "VisaGrantDate"].map((field) => {
+        {["fullName", "email", "VisaCountry", "Feedback", "VisaGrantDate"].map((field) => {
           let inputType = "text";
           if (field === "email") inputType = "email";
           if (field === "VisaGrantDate") inputType = "date";
