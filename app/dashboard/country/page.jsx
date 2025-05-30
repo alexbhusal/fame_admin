@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { getDocs, firestore, collection } from "../../../utils/firebase";
-import * as XLSX from "xlsx";
 import { useRouter } from "next/navigation";
 import Loadusers from "@/Components/Animation/LoadUsers";
 import Link from "next/link";
@@ -15,12 +14,12 @@ const Page = () => {
   const router = useRouter();
 
   const defaultImg =
-    "https://res.cloudinary.com/dxdbrqanq/image/upload/v1745248025/cmwzp0fvevkvc4ypxmpc.png";
+  "https://images.pexels.com/photos/1098515/pexels-photo-1098515.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userDB = collection(firestore, "admin");
+        const userDB = collection(firestore, "country");
         const sData = await getDocs(userDB);
         const userData = sData.docs.map((doc) => ({
           id: doc.id,
@@ -36,29 +35,14 @@ const Page = () => {
     fetchData();
   }, []);
 
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(
-      filteredUsers.map((user, i) => ({
-        "S No.": i + 1,
-        Name: user.fullName,
-        Designation:user.designation,
-        Email: user.email,
-        Phone: user.mobileNumber,
-        Cretedat:user.createdAt
-      }))
-    );
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Admin");
-    XLSX.writeFile(workbook, "Admin_Data.xlsx");
-  };
 
   const filteredUsers = users.filter((user) =>
-    user.fullName?.toLowerCase().includes(searchTerm.toLowerCase())
+    user.countryName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
   const currentUsers = filteredUsers
-    .sort((a, b) => a.fullName?.localeCompare(b.fullName))
+    .sort((a, b) => a.countryName?.localeCompare(b.countryName))
     .slice((currentPage - 1) * usersPerPage, currentPage * usersPerPage);
 
   const uniqueValues = (key) =>
@@ -71,13 +55,13 @@ const Page = () => {
   ) : (
     <div className="px-4">
       <h1 className="text-center text-2xl md:text-4xl italic font-serif mb-4">
-        Admin Record
+        Country Record
       </h1>
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
         <input
           type="text"
-          placeholder="Search by name"
+          placeholder="Search by Country Name"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
@@ -85,12 +69,6 @@ const Page = () => {
           }}
           className="border px-2 py-1 rounded w-full md:w-1/3"
         />
-        <button
-          onClick={exportToExcel}
-          className="bg-black text-white py-1 px-4 rounded self-end md:self-auto"
-        >
-          Download Excel
-        </button>
       </div>
 
       <div className="flex justify-between items-center text-lg font-semibold mb-2">
@@ -100,10 +78,10 @@ const Page = () => {
         </div>
         <div>
           <Link
-            href="/dashboard/members/addmembers"
+            href="/dashboard/country/addcountry"
             className="text-base bg-black text-white p-2 rounded-xl"
           >
-            +Add Member
+            +Add Country
           </Link>
         </div>
       </div>
@@ -112,13 +90,17 @@ const Page = () => {
       <table className="min-w-full border-collapse">
         <thead>
           <tr className="text-xs md:text-2xl">
-            {["S No.", "Name","Designation", "Email", "Phone", "Profile", "Action"].map(
-              (h, i) => (
-                <th key={i} className="border px-2 py-1">
-                  {h}
-                </th>
-              )
-            )}
+            {[
+              "S No.",
+              "Country Name",
+              "Description",
+              "Picture",
+              "Action",
+            ].map((h, i) => (
+              <th key={i} className="border px-2 py-1">
+                {h}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -130,23 +112,21 @@ const Page = () => {
               <td className="border px-2 py-1">
                 {(currentPage - 1) * usersPerPage + i + 1}
               </td>
-              <td className="border px-2 py-1">{user.fullName}</td>
-              <td className="border px-2 py-1">{user.designation}</td>
-              <td className="border px-2 py-1">{user.email}</td>
-              <td className="border px-2 py-1">
-                {user.mobileNumber || "----"}
+              <td className="border px-2 py-1  overflow-x-scroll">{user.countryName}</td>
+              <td className="border px-2 py-1  max-w-96  text-justify text-sm">
+                {user.description || "No description available"}
               </td>
-              <td className="border px-2 py-1 w-32">
+              <td className="border px-2 py-1 w-48">
                 <img
-                  src={user.imgurl || defaultImg}
+                  src={user.picUrl || defaultImg}
                   alt=""
-                  className="h-10 w-auto md:w-24 md:h-24 object-cover rounded-2xl"
+                  className="h-10 w-auto md:w-48 md:h-auto object-cover rounded-2xl"
                 />
               </td>
               <td className="border px-2 py-1">
                 <button
                   onClick={() =>
-                    router.push(`/dashboard/members/edit/${user.id}`)
+                    router.push(`/dashboard/country/edit/${user.id}`)
                   }
                   className="bg-black text-white px-2 py-1 rounded"
                 >

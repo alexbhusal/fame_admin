@@ -2,32 +2,29 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { collection, addDoc } from "firebase/firestore";
-import { firestore } from "../../../utils/firebase";
+import { firestore } from "../../../../utils/firebase";
 import Swal from "sweetalert2";
 import UploadImage from "@/Components/Main/UploadImage";
 
 const AddUserPage = () => {
   const router = useRouter();
   const [user, setUser] = useState({
-    fullName: "",
-    email: "",
-    imgurl: "",
-    VisaCountry: "",
-    University: "",
-    VisaGrantDate: "",
+    countryName: "",
+    description: "",
+    picUrl: "",
     createdAt: new Date().toLocaleString(),
   });
   const [submitting, setSubmitting] = useState(false);
 
   const defaultImg =
-    "https://res.cloudinary.com/dxdbrqanq/image/upload/v1745248025/cmwzp0fvevkvc4ypxmpc.png";
+  "https://images.pexels.com/photos/1098515/pexels-photo-1098515.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 
   const handleChange = (e) =>
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();  // Prevent default form submission reload
-    if (!user.imgurl || user.imgurl === defaultImg) {
+    if (!user.picUrl || user.picUrl === defaultImg) {
     Swal.fire("Error", "Please upload a profile image before submitting.", "error");
     return;
   }
@@ -35,11 +32,11 @@ const AddUserPage = () => {
     try {
       const userData = {
         ...user,
-        imgurl: user.imgurl || defaultImg,
+        picUrl: user.picUrl || defaultImg,
       };
-      await addDoc(collection(firestore, "student"), userData);
-      Swal.fire("Success", `${user.fullName} added successfully!`, "success");
-      router.push("/dashboard/students");
+      await addDoc(collection(firestore, "country"), userData);
+      Swal.fire("Success", `${user.countryName} added successfully!`, "success");
+      router.push("/dashboard/country");
     } catch (error) {
       console.error("Add user error:", error);
       Swal.fire("Error", "Failed to add user", "error");
@@ -49,7 +46,7 @@ const AddUserPage = () => {
   };
 
   const setImageUrl = (url) => {
-    setUser((prev) => ({ ...prev, imgurl: url }));
+    setUser((prev) => ({ ...prev, picUrl: url }));
   };
 
   return (
@@ -58,7 +55,7 @@ const AddUserPage = () => {
 
       <div className="flex justify-center items-center mb-4">
         <img
-          src={user.imgurl || defaultImg}
+          src={user.picUrl || defaultImg}
           alt="User"
           className="h-32 w-32 object-cover rounded-2xl"
         />
@@ -69,26 +66,30 @@ const AddUserPage = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {["fullName", "email", "VisaCountry", "Feedback", "VisaGrantDate"].map((field) => {
-          let inputType = "text";
-          if (field === "email") inputType = "email";
-          if (field === "VisaGrantDate") inputType = "date";
+        <div className="mb-4">
+  <label className="block mb-1 font-serif">COUNTRY NAME</label>
+  <input
+    type="text"
+    name="countryName"
+    value={user.countryName || ""}
+    placeholder="enter country name "
+    onChange={handleChange}
+    className="w-full border px-3 py-2 rounded font"
+  />
+</div>
 
-          return (
-            <div key={field} className="mb-4">
-              <label className="block mb-1 font-serif">{field.toUpperCase()}</label>
-              <input
-                type={inputType}
-                name={field}
-                value={user[field]}
-                required
-                onChange={handleChange}
-                placeholder={`Enter ${field}`}
-                className="w-full border px-3 py-2 rounded font"
-              />
-            </div>
-          );
-        })}
+<div className="mb-4">
+  <label className="block mb-1 font-serif">DESCRIPTION</label>
+  <textarea
+    name="description"
+    value={user.description || ""}
+    placeholder="enter description "
+    onChange={handleChange}
+    className="w-full border px-3 py-2 rounded font"
+    rows={4}
+  />
+</div>
+
 
         <div className="flex justify-center">
           <button
@@ -96,7 +97,7 @@ const AddUserPage = () => {
             disabled={submitting}
             className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
           >
-            {submitting ? "Submitting..." : "Add Student"}
+            {submitting ? "Adding..." : "Add Country"}
           </button>
         </div>
       </form>

@@ -4,7 +4,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { auth, firestore } from "../../../utils/firebase";
+import { auth, firestore } from "../../../../utils/firebase";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 

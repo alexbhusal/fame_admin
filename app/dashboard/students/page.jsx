@@ -101,7 +101,7 @@ const Page = () => {
         </div>
         <div>
           <Link
-            href="/dashboard/addstudents"
+            href="/dashboard/students/addstudents"
             className="text-base bg-black text-white p-2 rounded-xl"
           >
             +Add Student

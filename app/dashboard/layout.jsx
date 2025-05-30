@@ -10,6 +10,8 @@ import { auth, firestore } from "../../utils/firebase";
 import { GrUserAdmin } from "react-icons/gr";
 import { IoHome } from "react-icons/io5";
 import { PiStudent } from "react-icons/pi";
+import { FiMapPin } from "react-icons/fi";
+
 
 const navItems = [
   {
@@ -33,6 +35,14 @@ const navItems = [
     label: (
       <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
         <PiStudent /> Students
+      </span>
+    ),
+  },
+  {
+    href: "/dashboard/country",
+    label: (
+      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <FiMapPin /> Country
       </span>
     ),
   },
@@ -120,10 +130,11 @@ const DashboardLayout = ({ children }) => {
     );
   }
 
-  return (
-    <div className="flex flex-col w-full md:flex-row min-h-screen">
-      <aside className="w-full md:w-40 p-2 md:border-r-4 border-black m-0 md:m-10">
-        <ul className="flex flex-row md:flex-col space-y-0 md:space-y-2 mt-5 md:mt-10">
+return (
+  <div className="flex w-full min-h-screen overflow-hidden">
+    <aside className="w-40 p-2 md:border-r-4 border-black m-0 md:m-10 flex-shrink-0 relative">
+      <div className="flex flex-col h-full">
+        <ul className="flex flex-col space-y-2 mt-10">
           {navItems.map(({ href, label }) => (
             <li key={href}>
               <Link href={href} className="text-xs md:text-2xl font-semibold">
@@ -134,13 +145,13 @@ const DashboardLayout = ({ children }) => {
             </li>
           ))}
         </ul>
-        <div className="absolute  md:bottom-10 text-center">
+        <div className="mt-auto text-center">
           <img
             src={userImageurl}
             alt="Profile"
             className="w-auto h-12 md:h-32 rounded-full mx-auto"
           />
-          <h1 className="mt-2 font-bold text-sm md:text-lg  w-32 overflow-x-hidden whitespace-nowrap">
+          <h1 className="mt-2 font-bold text-sm md:text-lg w-32 overflow-x-hidden whitespace-nowrap">
             {userName}
           </h1>
           <h1 className="text-xs text-gray-500 w-32 overflow-x-hidden whitespace-nowrap">
@@ -153,10 +164,15 @@ const DashboardLayout = ({ children }) => {
             Logout
           </button>
         </div>
-      </aside>
-      <section className="flex-1 p-4 md:p-8">{children}</section>
-    </div>
-  );
+      </div>
+    </aside>
+
+    <section className="flex-1 overflow-y-auto h-screen p-4 md:p-8">
+      {children}
+    </section>
+  </div>
+);
+
 };
 
 export default DashboardLayout;
