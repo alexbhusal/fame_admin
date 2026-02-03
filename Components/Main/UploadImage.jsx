@@ -4,7 +4,7 @@ const UploadImage = ({ setImageUrl }) => {
   const handleSuccess = (result) => {
     console.log(result);
     const uploadedUrl = result.info.secure_url;
-    setImageUrl(uploadedUrl); // Pass the URL to the parent component
+    setImageUrl(uploadedUrl); 
   };
 
   return (
