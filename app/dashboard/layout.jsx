@@ -66,8 +66,7 @@ const DashboardLayout = ({ children }) => {
         try {
           const userDocRef = doc(firestore, "admin", currentUser.uid);
           const userDocSnap = await getDoc(userDocRef);
-          console.log(currentUser.uid);
-
+          
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
             setUserName(userData.fullName || "No name provided");
